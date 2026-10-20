@@ -1,0 +1,44 @@
+// Code your testbench here
+// or browse Examples
+module FIFO_tb();
+
+reg clk, rd, wr, rst;
+reg [31:0] datain;
+wire empty, full;
+wire [31:0] dataout;
+
+FIFO uut(
+    .clk(clk),
+    .rd(rd),
+    .wr(wr),
+    .rst(rst),
+    .datain(datain),
+    .empty(empty),
+    .full(full),
+    .dataout(dataout)
+);
+
+initial begin
+    rst = 1;
+    #5;
+    rst = 0;
+end
+
+always #5 clk = ~clk;
+
+initial begin
+    clk = 0;
+    wr = 1;
+    rd = 0;
+
+    #5 datain = 32'b1010101;
+    #10 datain = 32'b1000010;
+    #10 datain = 32'b1011000;
+
+    #5 wr = 0;
+    rd = 1;
+
+    #35 $finish;
+end
+
+endmodule
